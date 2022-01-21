@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "my-profile": {
+    "dummy-app": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/my-profile",
+            "outputPath": "dist/dummy-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -65,18 +65,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "my-profile:build"
+            "browserTarget": "dummy-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "my-profile:build:production"
+              "browserTarget": "dummy-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "my-profile:build"
+            "browserTarget": "dummy-app:build"
           }
         },
         "test": {
@@ -115,16 +115,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "my-profile:serve"
+            "devServerTarget": "dummy-app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "my-profile:serve:production"
+              "devServerTarget": "dummy-app:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "my-profile"
+  "defaultProject": "dummy-app"
 }
