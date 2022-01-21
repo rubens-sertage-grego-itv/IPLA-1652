@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-gcp": "ng build --deploy-url=/ipla-1652-embark-dev/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
