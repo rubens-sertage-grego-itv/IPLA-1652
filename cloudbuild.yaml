@@ -15,7 +15,7 @@ steps:
   - name: 'gcr.io/cloud-builders/gsutil'
     id: copy_files
     dir: /workspace
-    args: ['cp','-r','dist/*', '\${_ANGULAR_APP_BUCKET_PATH}']
+    args: ['cp','-r','dist/dummy-app/*', '\${_ANGULAR_APP_BUCKET_PATH}']
     waitFor:
       - build_files
 
