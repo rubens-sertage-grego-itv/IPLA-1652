@@ -15,18 +15,18 @@ steps:
   - name: 'gcr.io/cloud-builders/gsutil'
     id: copy_files
     dir: /workspace
-    args: ['cp','-r','dist/*', 'ipla-1652-embark-dev']
+    args: ['cp','-r','dist/*', '\${_ANGULAR_APP_BUCKET_PATH}']
     waitFor:
       - build_files
 
   - name: 'gcr.io/cloud-builders/gsutil'
     id: set_website_configuration
-    args: ['web', 'set', '-m', 'index.html','ipla-1652-embark-dev']
+    args: ['web', 'set', '-m', 'index.html','\${_ANGULAR_APP_BUCKET_PATH}']
     waitFor:
       - copy_files
 
   - name: 'gcr.io/cloud-builders/gsutil'
     id: set_permissions_for_website_files
-    args: ['acl','ch','-u','AllUsers:R','-r', 'ipla-1652-embark-dev']
+    args: ['acl','ch','-u','AllUsers:R','-r', '\${_ANGULAR_APP_BUCKET_PATH}']
     waitFor:
       - set_website_configuration
