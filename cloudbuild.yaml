@@ -1,7 +1,7 @@
 steps:
   - name: 'node:10'
     id: Install dependencies
-    dir: /workspace/IPLA-1652
+    dir: /workspace
     entrypoint: npm
     args: ['ci']
 
@@ -9,7 +9,7 @@ steps:
     id: Build the app
     entrypoint: /bin/sh
     timeout: 1000s
-    dir: /workspace/IPLA-1652/build-steps
+    dir: /workspace/build-steps
     args:
       - '-c'
       - |
@@ -17,7 +17,7 @@ steps:
 
   - name: 'gcr.io/cloud-builders/gsutil'
     id: Copy dist files to bucket
-    dir: /workspace/IPLA-1652
+    dir: /workspace
     args: ['cp','-r','dist/*', '\${ipla-1652-embark-dev}']
 
   - name: 'gcr.io/cloud-builders/gsutil'
