@@ -1,31 +1,32 @@
 steps:
-  - name: 'node:10'
-    id: Install dependencies
-    dir: /workspace
-    entrypoint: npm
-    args: ['ci']
-
-  - name: 'node:10'
-    id: Build the app
-    entrypoint: /bin/sh
-    timeout: 1000s
-    dir: /workspace/build-steps
+  - id: install_packages
+    name: 'gcr.io/cloud-builders/npm'
     args:
-      - '-c'
-      - |
-        ./build.sh
+      - 'install'
+
+  - id: build_files
+    name: 'gcr.io/cloud-builders/npm'
+    args:
+      - 'run'
+      - 'build-gcp'
+    waitFor:
+      - install_packages
 
   - name: 'gcr.io/cloud-builders/gsutil'
-    id: Copy dist files to bucket
+    id: copy_files
     dir: /workspace
     args: ['cp','-r','dist/*', '\${ipla-1652-embark-dev}']
+    waitFor:
+      - build_files
 
   - name: 'gcr.io/cloud-builders/gsutil'
-    id: Set website configuration
+    id: set_website_configuration
     args: ['web', 'set', '-m', 'index.html','\${ipla-1652-embark-dev}']
+    waitFor:
+      - copy_files
 
   - name: 'gcr.io/cloud-builders/gsutil'
     id: set_permissions_for_website_files
     args: ['acl','ch','-u','AllUsers:R','-r', '\${ipla-1652-embark-dev}']
-
-timeout: 2000s
+    waitFor:
+      - set_website_configuration
