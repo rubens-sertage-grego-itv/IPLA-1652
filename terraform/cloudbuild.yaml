@@ -1,0 +1,32 @@
+steps:
+  - id: install_packages
+    name: 'gcr.io/cloud-builders/npm'
+    args:
+      - 'install'
+
+  - id: build_files
+    name: 'gcr.io/cloud-builders/npm'
+    args:
+      - 'run'
+      - 'build-terraform'
+    waitFor:
+      - install_packages
+
+  - name: 'gcr.io/cloud-builders/gsutil'
+    id: copy_files
+    dir: /workspace
+    args: ['cp','-r','dist/dummy-app/*', '${_ANGULAR_APP_BUCKET_PATH}']
+    waitFor:
+      - build_files
+
+  - name: 'gcr.io/cloud-builders/gsutil'
+    id: set_website_configuration
+    args: ['web', 'set', '-m', 'index.html','${_ANGULAR_APP_BUCKET_PATH}']
+    waitFor:
+      - copy_files
+
+  - name: 'gcr.io/cloud-builders/gsutil'
+    id: set_permissions_for_website_files
+    args: ['acl','ch','-u','AllUsers:R','-r', '${_ANGULAR_APP_BUCKET_PATH}']
+    waitFor:
+      - set_website_configuration
